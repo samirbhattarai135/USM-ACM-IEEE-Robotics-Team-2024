@@ -1,0 +1,143 @@
+//This code is used to test the motors and to make sure every direction is able to be executed.
+
+// Motor pin variables
+int motor1pin1 = 2;
+int motor1pin2 = 3;
+
+int motor2pin1 = 4;
+int motor2pin2 = 5;
+
+int motor4pin1 = 6;
+int motor4pin2 = 7;
+
+int motor3pin1 = 8;
+int motor3pin2 = 9;
+
+
+// If pin1 is HIGH, spin forward. If pin2 is HIGH, spin backward
+// If pin1 and pin2 is LOW, OFF
+//Motor 1 and 3 are on left side, Motor 2 and 4 are on right side
+void setup() {
+  Serial.begin(9600);
+
+  // Set motor pins as outputs
+  pinMode(motor1pin1, OUTPUT);
+  pinMode(motor1pin2, OUTPUT);
+  pinMode(motor2pin1, OUTPUT);
+  pinMode(motor2pin2, OUTPUT);
+  pinMode(motor3pin1, OUTPUT);
+  pinMode(motor3pin2, OUTPUT);
+  pinMode(motor4pin1, OUTPUT);
+  pinMode(motor4pin2, OUTPUT);
+
+}
+
+void loop() {
+
+int speed = 150;
+moveForward();
+delay(1000);
+moveBackward();
+delay(1000);
+turnLeft();
+delay(1000);
+turnRight();
+delay(1000);
+TankTurnRight();
+delay(1000);
+TankTurnLeft();
+delay(1000);
+stopMove();
+delay(2500);
+
+}
+// analogWrite was digitalWrite
+// spped = HIGH, 0 = LOW
+
+
+
+// Move all motors forward
+void moveForward(int speed) {
+  
+  analogWrite(motor1pin1, speed);
+  analogWrite(motor1pin2, 0);
+  analogWrite(motor2pin1, speed);
+  analogWrite(motor2pin2, 0);
+  analogWrite(motor3pin1, speed);
+  analogWrite(motor3pin2, 0);
+  analogWrite(motor4pin1, speed);
+  analogWrite(motor4pin2, 0);
+  
+
+}
+
+// Move all motors backward
+void moveBackward(int speed) {
+  analogWrite(motor1pin1, 0);
+  analogWrite(motor1pin2, speed);
+  analogWrite(motor2pin1, 0);
+  analogWrite(motor2pin2, speed);
+  analogWrite(motor3pin1, 0);
+  analogWrite(motor3pin2, speed);
+  analogWrite(motor4pin1, 0);
+  analogWrite(motor4pin2, speed);
+}
+
+// Turning to the right by moving motors 1 and 3
+void turnRight(int speed) {
+  analogWrite(motor1pin1, speed);
+  analogWrite(motor1pin2, 0);
+  analogWrite(motor2pin1, 0);
+  analogWrite(motor2pin2, 0);
+  analogWrite(motor3pin1, speed);
+  analogWrite(motor3pin2, 0);
+  analogWrite(motor4pin1, 0);
+  analogWrite(motor4pin2, 0);
+}
+
+// Turning to the right by moving motors 2 and 4
+void turnLeft(int speed) {
+  analogWrite(motor1pin1, 0);
+  analogWrite(motor1pin2, 0);
+  analogWrite(motor2pin1, speed);
+  analogWrite(motor2pin2, 0);
+  analogWrite(motor3pin1, 0);
+  analogWrite(motor3pin2, 0);
+  analogWrite(motor4pin1, speed);
+  analogWrite(motor4pin2, 0);
+}
+
+// Stop all motors
+void stopMove(int speed) {
+  analogWrite(motor1pin1, 0);
+  analogWrite(motor1pin2, 0);
+  analogWrite(motor2pin1, 0);
+  analogWrite(motor2pin2, 0);
+  analogWrite(motor3pin1, 0);
+  analogWrite(motor3pin2, 0);
+  analogWrite(motor4pin1, 0);
+  analogWrite(motor4pin2, 0);
+}
+//Turning Motors 1 and 3 forward, Turning Motors 2 and 4 backward
+void TankTurnRight(int speed) {
+  analogWrite(motor1pin1, HIGH);
+  analogWrite(motor1pin2, LOW);
+  analogWrite(motor2pin1, LOW);
+  analogWrite(motor2pin2, HIGH);
+  analogWrite(motor3pin1, HIGH);
+  analogWrite(motor3pin2, LOW);
+  analogWrite(motor4pin1, LOW);
+  analogWrite(motor4pin2, HIGH);
+}
+
+//Turning Motors 1 and 3 backward, Turning Motors 2 and 4 forward
+void TankTurnLeft(int speed) {
+  analogWrite(motor1pin1, 0);
+  analogWrite(motor1pin2, speed);
+  analogWrite(motor2pin1, speed);
+  analogWrite(motor2pin2, 0);
+  analogWrite(motor3pin1, 0);
+  analogWrite(motor3pin2, speed);
+  analogWrite(motor4pin1, speed);
+  analogWrite(motor4pin2, 0);
+}
