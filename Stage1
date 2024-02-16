@@ -35,19 +35,19 @@ void setup() {
 void loop() {
 
 int speed = 150;
-moveForward();
+moveForward(speed);
 delay(1000);
-moveBackward();
+moveBackward(speed);
 delay(1000);
-turnLeft();
+turnLeft(speed);
 delay(1000);
-turnRight();
+turnRight(speed);
 delay(1000);
-TankTurnRight();
+TankTurnRight(speed);
 delay(1000);
-TankTurnLeft();
+TankTurnLeft(speed);
 delay(1000);
-stopMove();
+stopMove(speed);
 delay(2500);
 
 }
