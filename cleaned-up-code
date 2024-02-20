@@ -1,0 +1,163 @@
+// NOTES
+// If pin1 is HIGH, spin forward. If pin2 is HIGH, spin backward
+// If pin1 and pin2 is LOW, OFF
+// Motor 1 and 3 are on left side, Motor 2 and 4 are on right side
+
+#include <Arduino.h>
+// Has the robot been activated?
+bool robotOn = false;
+
+// Light Sensor
+const int PhotoResistorPin = A1;
+
+// Motor pin variables
+const int motorPins[4][2] = {
+  {2, 3}, 
+  {4, 5}, 
+  {6, 7}, 
+  {8, 9}
+  }; // motor pin arrays
+
+// Define motor direction constants
+const int FORWARD = 1;
+const int BACKWARD = 2;
+const int STOP = 0;
+
+
+void setup() {
+  Serial.begin(9600);
+
+  // Set motor pins as outputs
+  for (int i = 0; i <= 4; i++) {
+    pinMode(motorPins[i][0], OUTPUT);
+    pinMode(motorPins[i][1], OUTPUT);
+  }
+
+  // Set photoresistor to INPUT
+  pinMode(PhotoResistorPin, INPUT);
+
+}
+
+
+void loop() {
+  int speed = 150;
+  MoveForward(speed);
+}
+
+// allows us to assign a motor, direction and speed
+void MoveMotor(int motor, int direction, int speed) {
+  Serial.println("MoveMotor called with motor: " + String(motor) + ", direction: " + String(direction) + ", speed: " + String(speed));
+  if (direction == FORWARD) {
+    analogWrite(motorPins[motor][0], HIGH);
+    analogWrite(motorPins[motor][1], LOW);
+  } else if (direction == BACKWARD) {
+    analogWrite(motorPins[motor][0], LOW);
+    analogWrite(motorPins[motor][1], HIGH);
+  } else {
+    analogWrite(motorPins[motor][0], LOW);
+    analogWrite(motorPins[motor][1], LOW);
+  }
+
+  if (speed > 0 && speed <= 255) {
+    analogWrite(motorPins[motor][0], speed);
+    analogWrite(motorPins[motor][1], speed);
+  } else {
+    analogWrite(motorPins[motor][0], LOW);
+    analogWrite(motorPins[motor][1], LOW);
+  }
+}
+
+void move(int motor, int direction, int speed) {
+  MoveMotor(motor, direction, speed);
+}
+
+// Does all the motion controls
+void Dance(int speed) {
+  MoveForward(speed);
+  delay(1000);
+  MoveBackward(speed);
+  delay(1000);
+  TurnRight(speed);
+  delay(1000);
+  BackRight(speed);
+  delay(1000);
+  TurnLeft(speed);
+  delay(1000);
+  BackLeft(speed);
+  delay(1000);
+  TankTurnRight(speed);
+  delay(1000);
+  TankTurnLeft(speed);
+  delay(1000);
+  StopMove();
+  delay(2500);
+}
+
+// Move Backward, all motors are going backward
+void MoveBackward(int speed) {
+  for (int i = 0; i < 4; i++) {
+    MoveMotor(i+1, BACKWARD, speed);
+  }
+}
+
+// Move Forward, all motors are going forward
+void MoveForward(int speed) {
+  for (int i = 0; i < 4; i++) {
+    MoveMotor(i+1, FORWARD, speed);
+  }
+}
+
+// turning Left, Motor 2 and 4 go forward
+void TurnLeft(int speed) {
+  MoveMotor(1, STOP, 0);
+  MoveMotor(3, STOP, 0);
+  MoveMotor(2, FORWARD, speed);
+  MoveMotor(4, FORWARD, speed);
+}
+
+// turning right, Motor 1 and 3 go forward
+void TurnRight(int speed) {
+  MoveMotor(1, FORWARD, speed);
+  MoveMotor(3, FORWARD, speed);
+  MoveMotor(2, STOP, 0);
+  MoveMotor(4, STOP, 0);
+}
+
+// turning Backward Right, Motor 2 and 4 go backward
+void BackLeft(int speed) {
+  MoveMotor(1, STOP, 0);
+  MoveMotor(3, STOP, 0);
+  MoveMotor(2, BACKWARD, speed);
+  MoveMotor(4, BACKWARD, speed);
+}
+
+// turning Backward Left, Motor 1 and 3 go backward
+void BackRight(int speed) {
+  MoveMotor(1, BACKWARD, speed);
+  MoveMotor(3, BACKWARD, speed);
+  MoveMotor(2, STOP, 0);
+  MoveMotor(4, STOP, 0);
+}
+
+// Turning Motors 1 and 3 forward, Turning Motors 2 and 4 backward
+void TankTurnRight(int speed) {
+  MoveMotor(1, FORWARD, speed);
+  MoveMotor(3, FORWARD, speed);
+  MoveMotor(2, BACKWARD, speed);
+  MoveMotor(4, BACKWARD, speed);
+}
+
+// Turning Motors 1 and 3 backward, Turning Motors 2 and 4 forward
+void TankTurnLeft(int speed) {
+  MoveMotor(1, BACKWARD, speed);
+  MoveMotor(3, BACKWARD, speed);
+  MoveMotor(2, FORWARD, speed);
+  MoveMotor(4, FORWARD, speed);
+}
+
+// Stops all the motors
+void StopMove() {
+  for (int i = 0; i < 4; i++) {
+    MoveMotor(i+1, STOP, 0);
+  }
+}
