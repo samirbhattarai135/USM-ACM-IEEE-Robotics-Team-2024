@@ -1,83 +1,50 @@
 #include <Arduino.h>
 
 bool robotOn = false;
-
 const int motor1pin1 = 2;
-
 const int motor1pin2 = 3;
-
 const int motor2pin1 = 4;
-
 const int motor2pin2 = 5;
-
-const int motor3pin1 = 6;
-
-const int motor3pin2 = 7;
-
-const int motor4pin1 = 8;
-
-const int motor4pin2 = 9;
-
+const int motor3pin1 = 8;
+const int motor3pin2 = 9;
+const int motor4pin1 = 6;
+const int motor4pin2 = 7;
 const int photoResistorPin = A1;
 
-
 void setup() {
-
   Serial.begin(9600);
-
-
   pinMode(motor1pin1, OUTPUT);
-
   pinMode(motor1pin2, OUTPUT);
-
   pinMode(motor2pin1, OUTPUT);
-
   pinMode(motor2pin2, OUTPUT);
-
   pinMode(motor3pin1, OUTPUT);
-
   pinMode(motor3pin2, OUTPUT);
-
   pinMode(motor4pin1, OUTPUT);
-
   pinMode(motor4pin2, OUTPUT);
-
   pinMode(photoResistorPin, INPUT);
-
 }
 
 
 void loop() {
-
   int val = analogRead(photoResistorPin);
   int speed = 150;
-  bool powered = val > 720;
-
+  bool powered = val > 700;
 
   if (powered && !robotOn) {
-
     dance(speed);
-
+    delay(1000);
     robotOn = true;
 
   }
 
-
   Serial.println(val);
-
-
   delay(100);
-
 }
-
 
 // analogWrite was digitalWrite
 // spped = HIGH, 0 = LOW
 
-
-
 void dance(int speed) {
-
   moveForward(speed);
   delay(1000);
   moveBackward(speed);
@@ -92,15 +59,8 @@ void dance(int speed) {
   delay(1000);
 }
 
-
-
-
 // Move all motors forward
-
-
-
 void moveForward(int speed) {
- 
   analogWrite(motor1pin1, speed);
   analogWrite(motor1pin2, 0);
   analogWrite(motor2pin1, speed);
@@ -109,8 +69,6 @@ void moveForward(int speed) {
   analogWrite(motor3pin2, 0);
   analogWrite(motor4pin1, speed);
   analogWrite(motor4pin2, 0);
- 
-
 }
 
 // Move all motors backward
@@ -162,14 +120,14 @@ void stopMove(int speed) {
 }
 //Turning Motors 1 and 3 forward, Turning Motors 2 and 4 backward
 void TankTurnRight(int speed) {
-  analogWrite(motor1pin1, HIGH);
-  analogWrite(motor1pin2, LOW);
-  analogWrite(motor2pin1, LOW);
-  analogWrite(motor2pin2, HIGH);
-  analogWrite(motor3pin1, HIGH);
-  analogWrite(motor3pin2, LOW);
-  analogWrite(motor4pin1, LOW);
-  analogWrite(motor4pin2, HIGH);
+  analogWrite(motor1pin1, speed);
+  analogWrite(motor1pin2, 0);
+  analogWrite(motor2pin1, 0);
+  analogWrite(motor2pin2, speed);
+  analogWrite(motor3pin1, speed);
+  analogWrite(motor3pin2, 0);
+  analogWrite(motor4pin1, 0);
+  analogWrite(motor4pin2, speed);
 }
 
 //Turning Motors 1 and 3 backward, Turning Motors 2 and 4 forward
