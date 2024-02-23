@@ -52,7 +52,7 @@ delay(2500);
 
 }
 // analogWrite was digitalWrite
-// spped = HIGH, 0 = LOW
+// speed = HIGH, 0 = LOW
 
 
 
@@ -120,14 +120,14 @@ void stopMove(int speed) {
 }
 //Turning Motors 1 and 3 forward, Turning Motors 2 and 4 backward
 void TankTurnRight(int speed) {
-  analogWrite(motor1pin1, HIGH);
-  analogWrite(motor1pin2, LOW);
-  analogWrite(motor2pin1, LOW);
-  analogWrite(motor2pin2, HIGH);
-  analogWrite(motor3pin1, HIGH);
-  analogWrite(motor3pin2, LOW);
-  analogWrite(motor4pin1, LOW);
-  analogWrite(motor4pin2, HIGH);
+  analogWrite(motor1pin1, speed);
+  analogWrite(motor1pin2, 0);
+  analogWrite(motor2pin1, 0);
+  analogWrite(motor2pin2, speed);
+  analogWrite(motor3pin1, speed);
+  analogWrite(motor3pin2, 0);
+  analogWrite(motor4pin1, 0);
+  analogWrite(motor4pin2, speed);
 }
 
 //Turning Motors 1 and 3 backward, Turning Motors 2 and 4 forward
