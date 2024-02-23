@@ -1,0 +1,44 @@
+#include <Stepper.h>
+
+const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution
+// for your motor
+
+
+// initialize the stepper library on pins 8 through 11:
+Stepper myStepper(stepsPerRevolution, 2, 3, 4, 5);
+
+int stepCount = 0;  // number of steps the motor has taken
+
+void setup() {
+  // nothing to do inside the setup
+}
+
+
+void loop() {
+  // read the sensor value:
+  int speed = 100;
+  myStepper.setSpeed(speed);
+  backward();
+  delay(1000);
+  stop();
+  delay(1000);
+  forward(1000);
+  delay(1000);
+  stop();
+  delay(1000);
+ 
+}
+
+void stop(){
+      myStepper.step(stepsPerRevolution / 100);
+
+}
+
+void forward(){
+      myStepper.step(stepsPerRevolution);
+
+}
+void backward(){
+      myStepper.step(-stepsPerRevolution);
+
+}
