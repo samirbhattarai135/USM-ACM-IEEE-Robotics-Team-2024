@@ -1,0 +1,49 @@
+#include <Stepper.h>
+
+const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution for your motor
+
+// initialize the stepper library on pins 8 through 11:
+Stepper myStepper1(stepsPerRevolution, 2, 3, 4, 5);
+
+int stepCount = 0;  // number of steps the motor has taken
+int speed = 0; // initialize speed variable
+bool speedSet = false; // flag to indicate whether the speed has been set or not
+
+void setup() {
+  // nothing to do inside the setup
+  // initialize the serial port:
+  Serial.begin(9600);
+}
+
+void loop() {
+  // read the speed value from the serial input if it hasn't been set yet:
+  if (!speedSet && Serial.available() > 0) {
+    speed = Serial.parseInt(); // Read the integer value from serial input
+    if (speed <= 200 && speed > 0) {
+      speedSet = true; // Set the flag to indicate that speed has been set
+      Serial.print("Speed is set to: ");
+      Serial.println(speed);
+      myStepper1.setSpeed(speed); // Set the speed of the stepper motor
+    }
+  }
+  
+  if (speedSet) {
+    // Your main code logic using the speed variable goes here
+    backward();
+    delay(500);
+    stop();
+    delay(500);
+  }
+}
+
+void stop() {
+  myStepper1.step(stepsPerRevolution / 100);
+}
+
+void forward() {
+  myStepper1.step(stepsPerRevolution);
+}
+
+void backward() {
+  myStepper1.step(-stepsPerRevolution);
+}
